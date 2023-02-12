@@ -16,7 +16,7 @@ This ADDA implementation uses a 2D toy dataset with built-in plots that help to 
 ## 2D dataset
 The code starts by retrieving `source dataset` from data folder. Then it performs a rotation (domain shift) on a copy of the dataset. The rotated dataset is the `target dataset`. Here is a visualization of source and target datasets:
 <p align="center">
-  <img width="1200" src=dataset.PNG>
+  <img width="1200" src=dataset.png>
 </p>
 
 ## Source domain classifier
@@ -27,7 +27,7 @@ Avg Loss = 0.09552083398608816, Avg Accuracy = 95.000000%
 ```
 
 <p align="center">
-  <img width="1200" src="Testing source data using source encoder.PNG">
+  <img width="1200" src="Testing source data using source encoder.png">
 </p>
 
 ## Adversarial adaptation
@@ -38,7 +38,7 @@ The adversarial adaptation takes place in `core.train_tgt` function. The goal is
 Avg Loss = 0.6715516697670865, Avg Accuracy = 86.500000%
 ```
 <p align="center">
-  <img width="1200" src="Testing target data using source encoder.PNG">
+  <img width="1200" src="Testing target data using source encoder.png">
 </p>
 
 ```
@@ -46,7 +46,7 @@ Avg Loss = 0.6715516697670865, Avg Accuracy = 86.500000%
 Avg Loss = 0.2627955123776132, Avg Accuracy = 89.000000%
 ```
 <p align="center">
-  <img width="1200" src="Testing target data using target encoder.PNG">
+  <img width="1200" src="Testing target data using target encoder.png">
 </p>
 
 
