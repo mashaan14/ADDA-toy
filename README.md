@@ -23,7 +23,7 @@ The code starts by retrieving `source dataset` from data folder. Then it perform
 The `encoder` and `classifier` networks are trained to separate `source class 0` and `source class 1`. Most of this logic happens in `core.train_src` function. Then, the learned model is tested on the test data:
 
 ```
-Avg Loss = 0.09552083398608816, Avg Accuracy = 95.000000%
+Avg Loss = 0.12712214478670233, Avg Accuracy = 95.000000%
 ```
 
 <p align="center">
@@ -35,7 +35,7 @@ The adversarial adaptation takes place in `core.train_tgt` function. The goal is
 
 ```
 >>> Testing target data using source encoder <<<
-Avg Loss = 0.6715516697670865, Avg Accuracy = 86.500000%
+Avg Loss = 0.7519925472198606, Avg Accuracy = 83.000000%
 ```
 <p align="center">
   <img width="1200" src="Testing target data using source encoder.png">
@@ -43,7 +43,7 @@ Avg Loss = 0.6715516697670865, Avg Accuracy = 86.500000%
 
 ```
 >>> Testing target data using target encoder <<<
-Avg Loss = 0.2627955123776132, Avg Accuracy = 89.000000%
+Avg Loss = 0.20527904715205728, Avg Accuracy = 91.500000%
 ```
 <p align="center">
   <img width="1200" src="Testing target data using target encoder.png">
