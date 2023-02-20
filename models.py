@@ -22,11 +22,11 @@ class Encoder(nn.Module):
         self.restored = False
 
         self.layer = nn.Sequential(
-            nn.Linear(2, 20),
+            nn.Linear(2, 100),
             nn.ReLU(),
-            nn.Linear(20, 50),
+            nn.Linear(100, 500),
             nn.ReLU(),
-            nn.Linear(50, 2)
+            nn.Linear(500, 2)
         )
 
     def forward(self, input):
@@ -65,11 +65,11 @@ class Discriminator(nn.Module):
         self.restored = False
 
         self.layer = nn.Sequential(
-            nn.Linear(2, 20),
+            nn.Linear(2, 500),
             nn.ReLU(),
-            nn.Linear(20, 50),
+            nn.Linear(500, 500),
             nn.ReLU(),
-            nn.Linear(50, 2),
+            nn.Linear(500, 2),
             nn.LogSoftmax()
         )
 
