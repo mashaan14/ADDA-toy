@@ -1,7 +1,7 @@
 # ADDA PyTorch implementation with 2D toy example
 Adversarial Discriminative Domain Adaptation (ADDA) is one of the well-known benchmarks for domain adaptation tasks. ADDA was introduced in this paper:
 
-```
+```bibtex
 @InProceedings{Tzeng_2017_CVPR,
 author = {Tzeng, Eric and Hoffman, Judy and Saenko, Kate and Darrell, Trevor},
 title = {Adversarial Discriminative Domain Adaptation},
