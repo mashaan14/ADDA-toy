@@ -6,6 +6,7 @@ import torch
 import models
 import utils
 import core
+import params
 
 
 def rotate(xy, theta):
@@ -31,15 +32,12 @@ XS_train, XS_test, YS_train, YS_test = train_test_split(XS, YS, test_size=0.2, r
 XT_train, XT_test, YT_train, YT_test = train_test_split(XT, YS, test_size=0.2, random_state=42)
 
 
-
 fig = plt.figure()  # figsize=(6, 6)
 ax = fig.add_subplot(111)
 for g in np.unique(YS_train):
     ix = np.where(YS_train == g)
     ax.scatter(XS_train[ix, 0], XS_train[ix, 1], label='source class '+str(int(g)))
-
 ax.scatter(XT[:, 0], XT[:, 1], c='k', label='target')
-
 plt.legend(loc=0)
 plt.tick_params(axis='both', which='both', bottom=False, top=False, left=False, right=False,
                 labelbottom=False, labeltop=False, labelleft=False, labelright=False)
@@ -62,26 +60,31 @@ XS_test_dataset = torch.utils.data.TensorDataset(XS_test_tensor, YS_test_tensor)
 XT_train_dataset = torch.utils.data.TensorDataset(XT_train_tensor, YT_train_tensor)
 XT_test_dataset = torch.utils.data.TensorDataset(XT_test_tensor, YT_test_tensor)
 
-XS_train_dataloader = torch.utils.data.DataLoader(XS_train_dataset)
-XS_test_dataloader = torch.utils.data.DataLoader(XS_test_dataset)
+XS_train_dataloader = torch.utils.data.DataLoader(XS_train_dataset, batch_size = params.batch_size)
+XS_test_dataloader = torch.utils.data.DataLoader(XS_test_dataset, batch_size = params.batch_size)
 
-XT_train_dataloader = torch.utils.data.DataLoader(XT_train_dataset)
-XT_test_dataloader = torch.utils.data.DataLoader(XT_test_dataset)
+XT_train_dataloader = torch.utils.data.DataLoader(XT_train_dataset, batch_size = params.batch_size)
+XT_test_dataloader = torch.utils.data.DataLoader(XT_test_dataset, batch_size = params.batch_size)
 
 src_encoder = models.Encoder()
-src_encoder.apply(utils.init_weights)
+if torch.cuda.is_available():
+    src_encoder.cuda()
 src_classifier = models.Classifier()
-src_classifier.apply(utils.init_weights)
+if torch.cuda.is_available():
+    src_classifier.cuda()
 
 src_encoder, src_classifier = core.train_src(src_encoder, src_classifier, XS_train_dataloader)
 core.eval_src(src_encoder, src_classifier, XS_test_dataloader, fig_title='Testing source data using source encoder')
 
 
 tgt_encoder = models.Encoder()
-tgt_encoder.apply(utils.init_weights)
+if torch.cuda.is_available():
+    tgt_encoder.cuda()
+tgt_encoder.load_state_dict(src_encoder.state_dict())
 
 discriminator = models.Discriminator()
-discriminator.apply(utils.init_weights)
+if torch.cuda.is_available():
+    discriminator.cuda()
 
 tgt_encoder = core.train_tgt(src_encoder, tgt_encoder, discriminator, src_classifier, XS_train_dataloader, XT_train_dataloader)
 
@@ -91,4 +94,3 @@ print(">>> Testing target data using source encoder <<<")
 core.eval_src(src_encoder, src_classifier, XT_test_dataloader, fig_title='Testing target data using source encoder')
 print(">>> Testing target data using target encoder <<<")
 core.eval_src(tgt_encoder, src_classifier, XT_test_dataloader, fig_title='Testing target data using target encoder')
-
