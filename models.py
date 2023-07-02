@@ -22,11 +22,12 @@ class Encoder(nn.Module):
         self.restored = False
 
         self.layer = nn.Sequential(
-            nn.Linear(2, 100),
+            nn.Linear(2, 16),
             nn.ReLU(),
-            nn.Linear(100, 500),
+            nn.Linear(16, 16),
+            nn.Dropout(0.2),
             nn.ReLU(),
-            nn.Linear(500, 2)
+            nn.Linear(16, 2)
         )
 
     def forward(self, input):
@@ -44,8 +45,7 @@ class Classifier(nn.Module):
         self.restored = False
 
         self.layer = nn.Sequential(
-            nn.Linear(2, 2),
-            nn.LogSoftmax()
+            nn.Softmax()
         )
 
     def forward(self, input):
@@ -63,14 +63,14 @@ class Discriminator(nn.Module):
         super(Discriminator, self).__init__()
 
         self.restored = False
-
+        
         self.layer = nn.Sequential(
-            nn.Linear(2, 500),
+            nn.Linear(2, 20),
             nn.ReLU(),
-            nn.Linear(500, 500),
+            nn.Linear(20, 50),
             nn.ReLU(),
-            nn.Linear(500, 2),
-            nn.LogSoftmax()
+            nn.Linear(50, 2),
+            nn.Softmax()
         )
 
     def forward(self, input):
