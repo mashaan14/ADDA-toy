@@ -11,7 +11,7 @@ manual_seed = None
 
 
 # params for optimizing models
-batch_size = 30
+batch_size = 32
 d_lr = 1e-4 #1e-4
 g_lr = 1e-4 #1e-4
 beta1 = 0.5
