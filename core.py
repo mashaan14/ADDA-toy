@@ -61,7 +61,7 @@ def train_src(encoder, classifier, data_loader):
 
     fig = plt.figure()  # figsize=(6, 6)
     ax = fig.add_subplot(111)
-    plt.plot(lossi)
+    plt.plot(torch.tensor(lossi).view(-1, params.log_step).mean(1))
     plt.title('Training source loss')
     plt.savefig('loss.png', bbox_inches='tight', dpi=600)
 
@@ -246,13 +246,13 @@ def train_tgt(src_encoder, tgt_encoder, discriminator, classifier, src_data_load
 
     fig = plt.figure()  # figsize=(6, 6)
     ax = fig.add_subplot(111)
-    plt.plot(discriminator_lossi)
+    plt.plot(torch.tensor(discriminator_lossi).view(-1, params.log_step).mean(1))
     plt.title('Discriminator loss')
     plt.savefig('discriminator_loss.png', bbox_inches='tight', dpi=600)
 
     fig = plt.figure()  # figsize=(6, 6)
     ax = fig.add_subplot(111)
-    plt.plot(generator_lossi)
+    plt.plot(torch.tensor(generator_lossi).view(-1, params.log_step).mean(1))
     plt.title('Generator loss')
     plt.savefig('generator_loss.png', bbox_inches='tight', dpi=600)
 
