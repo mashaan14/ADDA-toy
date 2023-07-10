@@ -1,5 +1,5 @@
 import os
-
+import math
 import torch
 import torch.optim as optim
 from torch import nn
@@ -61,7 +61,8 @@ def train_src(encoder, classifier, data_loader):
 
     fig = plt.figure()  # figsize=(6, 6)
     ax = fig.add_subplot(111)
-    plt.plot(torch.tensor(lossi).view(-1, params.log_step).mean(1))
+    # plot the average loss over 100 epochs
+    plt.plot(torch.tensor(lossi).view(-1, params.log_step).mean(1))    
     plt.title('Training source loss')
     plt.savefig('loss.png', bbox_inches='tight', dpi=600)
 
@@ -109,9 +110,9 @@ def eval_src(encoder, classifier, data_loader, fig_title=None):
     print("Avg Loss = {}, Avg Accuracy = {:2%}, ARI = {:.5f}".format(loss, acc, ari))
 
     if fig_title is not None:
-        h = .02  # step size in the mesh
-        x_min, x_max = samples[:, 0].min() - 5, samples[:, 0].max() + 5
-        y_min, y_max = samples[:, 1].min() - 5, samples[:, 1].max() + 5
+        h = .01  # step size in the mesh
+        x_min, x_max = feat[:, 0].min() - 5, feat[:, 0].max() + 5
+        y_min, y_max = feat[:, 1].min() - 5, feat[:, 1].max() + 5
         xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
                              np.arange(y_min, y_max, h))
         xxyy = np.concatenate((xx.ravel().reshape(-1,1), yy.ravel().reshape(-1,1)),axis=1)
@@ -159,16 +160,15 @@ def train_tgt(src_encoder, tgt_encoder, discriminator, classifier, src_data_load
 
     # setup criterion and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer_discriminator = optim.Adam(discriminator.parameters(),
-                                         lr=params.d_lr,
-                                         betas=(params.beta1, params.beta2))
-    optimizer_tgt = optim.Adam(tgt_encoder.parameters(),
-                               lr=params.g_lr,
-                               betas=(params.beta1, params.beta2))
+    optimizer_discriminator = optim.Adam(discriminator.parameters(), lr=params.d_lr)
+                                        #  betas=(params.beta1, params.beta2))
+    optimizer_tgt = optim.Adam(tgt_encoder.parameters(), lr=params.g_lr)
+                            #    betas=(params.beta1, params.beta2))
     # A scheduler to reduce the learning rate
     scheduler_tgt = optim.lr_scheduler.MultiStepLR(optimizer_tgt,
                                                    milestones=[round(params.num_epochs*0.3),round(params.num_epochs*0.6)], gamma=1e-1)
     len_data_loader = min(len(src_data_loader), len(tgt_data_loader))
+
 
     ####################
     # 2. train network #
@@ -196,20 +196,6 @@ def train_tgt(src_encoder, tgt_encoder, discriminator, classifier, src_data_load
             label_tgt = make_variable(torch.zeros(feat_tgt.size(0), requires_grad=False).long())
             adversary_label = torch.cat((label_src, label_tgt), 0)
 
-            ############################
-            # 2.2 train target encoder #
-            ############################
-
-            # clear out the gradients from the last step loss
-            optimizer_tgt.zero_grad()
-            # compute loss for target encoder
-            generator_loss = criterion(discriminator(feat_tgt), 1 - label_tgt)
-            generator_lossi.append(generator_loss.item())
-            # backward propagation: calculate gradients
-            generator_loss.backward()
-            # update the weights
-            optimizer_tgt.step()
-
             ###########################
             # 2.1 train discriminator #
             ###########################
@@ -223,6 +209,21 @@ def train_tgt(src_encoder, tgt_encoder, discriminator, classifier, src_data_load
             discriminator_loss.backward()
             #update the weights
             optimizer_discriminator.step()
+
+            ############################
+            # 2.2 train target encoder #
+            ############################
+
+            # clear out the gradients from the last step loss
+            optimizer_tgt.zero_grad()
+            # compute loss for target encoder
+            generator_loss = criterion(discriminator(feat_tgt), 1 - label_tgt)
+            # generator_loss = criterion(discriminator(feat_concat.detach()), 1 - adversary_label)
+            generator_lossi.append(generator_loss.item())
+            # backward propagation: calculate gradients
+            generator_loss.backward()
+            # update the weights
+            optimizer_tgt.step()
 
 
             
@@ -240,18 +241,18 @@ def train_tgt(src_encoder, tgt_encoder, discriminator, classifier, src_data_load
                             discriminator_loss.item(),
                             generator_loss.item()))
         
-        # step both schedulers
-        # scheduler_discriminator.step()
         scheduler_tgt.step()
 
     fig = plt.figure()  # figsize=(6, 6)
     ax = fig.add_subplot(111)
+    # plot the average loss
     plt.plot(torch.tensor(discriminator_lossi).view(-1, params.log_step).mean(1))
     plt.title('Discriminator loss')
     plt.savefig('discriminator_loss.png', bbox_inches='tight', dpi=600)
 
     fig = plt.figure()  # figsize=(6, 6)
     ax = fig.add_subplot(111)
+    # plot the average loss
     plt.plot(torch.tensor(generator_lossi).view(-1, params.log_step).mean(1))
     plt.title('Generator loss')
     plt.savefig('generator_loss.png', bbox_inches='tight', dpi=600)
