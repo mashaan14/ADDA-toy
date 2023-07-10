@@ -36,7 +36,7 @@ The adversarial adaptation takes place in `core.train_tgt` function. The goal is
 
 ```
 >>> Testing target data using source encoder <<<
-Avg Loss = 0.44775335277829853, Avg Accuracy = 86.000000%, ARI = 0.51600
+Avg Loss = 0.41065776348114014, Avg Accuracy = 89.000000%, ARI = 0.60646
 ```
 <p align="center">
   <img width="1200" src="Testing target data using source encoder.png">
@@ -44,7 +44,7 @@ Avg Loss = 0.44775335277829853, Avg Accuracy = 86.000000%, ARI = 0.51600
 
 ```
 >>> Testing target data using target encoder <<<
-Avg Loss = 0.3725416660308838, Avg Accuracy = 94.000000%, ARI = 0.77327
+Avg Loss = 0.3132730381829398, Avg Accuracy = 100.000000%, ARI = 1.00000
 ```
 <p align="center">
   <img width="1200" src="Testing target data using target encoder.png">
