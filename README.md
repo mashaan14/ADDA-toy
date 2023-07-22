@@ -32,7 +32,7 @@ The `encoder` and `classifier` networks are trained to separate `source class 0`
 </p>
 
 ## Adversarial adaptation
-The adversarial adaptation takes place in `core.train_tgt` function. The goal is to confuse the ` discriminator` so it cannot tell if the sample is drawn from source or target domain. Once we reach this level of learning, we use this learned features to train the target encoder. For comparison, these features are passed through source classifier and target classifier:
+The adversarial adaptation takes place in `core.train_tgt` function. The goal is to confuse the `discriminator` so it cannot tell if the sample is drawn from source or target domain. Once we reach this level of learning, we use this learned features to train the target encoder. For comparison, these features are passed through source classifier and target classifier:
 
 ```
 >>> Testing target data using source encoder <<<
