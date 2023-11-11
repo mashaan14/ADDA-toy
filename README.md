@@ -18,7 +18,7 @@ Adversarial Discriminative Domain Adaptation **(ADDA)** is one of the well-known
 
 This **ADDA** implementation uses a 2D toy dataset with built-in plots that help to visualize how the **ADDA** algorithm is learning the new features.
 
-## 2D dataset
+## 2-dimensional dataset
 The code starts by retrieving `source dataset` from data folder. Then it performs a rotation (domain shift) on a copy of the dataset. The rotated dataset is the `target dataset`. Here is a visualization of source and target datasets:
 <p align="center">
   <img width="1200" src=dataset.png>
