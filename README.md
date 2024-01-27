@@ -1,4 +1,4 @@
-# ADDA PyTorch implementation with 2D toy example
+# ADDA PyTorch implementation with a toy example
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/release/python-3100/)
 [![PyTorch](https://img.shields.io/badge/pytorch-1.13-brightgreen.svg)](https://pytorch.org/get-started/previous-versions/)
