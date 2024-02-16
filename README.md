@@ -4,7 +4,7 @@
 [![PyTorch](https://img.shields.io/badge/pytorch-1.13-brightgreen.svg)](https://pytorch.org/get-started/previous-versions/)
 [![torchvision](https://img.shields.io/badge/torchvision-0.14-brightgreen.svg)](https://pypi.org/project/torchvision/)
 
-Adversarial Discriminative Domain Adaptation **(ADDA)** is one of the well-known benchmarks for domain adaptation tasks. ADDA was introduced in this paper:
+**A**dversarial **D**iscriminative **D**omain **A**daptation **(ADDA)** is one of the well-known benchmarks for domain adaptation tasks. ADDA was introduced in this paper:
 
 ```bibtex
 @InProceedings{Tzeng_2017_CVPR,
